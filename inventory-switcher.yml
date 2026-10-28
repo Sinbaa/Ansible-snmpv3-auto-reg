@@ -1,0 +1,34 @@
+
+---
+all:
+  children:
+    zabbix_api:
+      hosts:
+        zabbix-api:
+          ansible_host: "192.168.40.10"
+          ansible_connection: ansible.netcommon.httpapi
+          ansible_network_os: community.zabbix.zabbix
+          ansible_httpapi_port: 80
+          ansible_httpapi_use_ssl: false
+          ansible_zabbix_url_path: "zabbix"
+
+    switches:
+      hosts:
+        KS-SW-01:
+          ansible_host: "192.168.99.10"
+          ansible_user: "admin"
+          snmp_location: "Kongsvinger"
+          snmp_contact: "IT"
+          zabbix_host_group: "Network Devices"
+          zabbix_template: "Cisco IOS by SNMP"
+          snmpv3_username: "zabbix"
+          snmpv3_group: "ZABBIX"
+          snmpv3_auth_protocol: "sha"
+          snmpv3_priv_protocol: "aes 128"
+          ansible_ssh_common_args: >-
+            -o KexAlgorithms=+diffie-hellman-group14-sha1
+            -o HostKeyAlgorithms=+ssh-rsa
+
+      vars:
+        ansible_connection: ansible.netcommon.network_cli
+        ansible_network_os: cisco.ios.ios

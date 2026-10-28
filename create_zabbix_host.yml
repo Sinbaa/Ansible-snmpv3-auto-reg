@@ -1,0 +1,53 @@
+
+---
+- name: Registrer switcher i Zabbix
+  hosts: zabbix_api
+  gather_facts: false
+
+  vars_files:
+    - vault.yml
+
+  tasks:
+    - name: Opprett host med SNMPv3
+      community.zabbix.zabbix_host:
+        host_name: "{{ hostvars[item].zabbix_hostname | default(item) }}"
+        host_groups:
+          - "{{ hostvars[item].zabbix_host_group }}"
+        link_templates:
+          - "{{ hostvars[item].zabbix_template }}"
+        description: "Administrert med Ansible"
+        status: enabled
+        state: present
+
+        interfaces:
+          - type: snmp
+            main: 1
+            useip: 1
+            ip: "{{ hostvars[item].ansible_host }}"
+            dns: ""
+            port: "161"
+            details:
+              version: 3
+              bulk: 1
+              securityname: "{{ hostvars[item].snmpv3_username }}"
+              securitylevel: 2
+              authprotocol: 1
+              authpassphrase: "{{ snmpv3_auth_passphrase }}"
+              privprotocol: 1
+              privpassphrase: "{{ snmpv3_priv_passphrase }}"
+
+        inventory_mode: manual
+        inventory_zabbix:
+          location: "{{ hostvars[item].snmp_location }}"
+
+        tags:
+          - tag: location
+            value: "{{ hostvars[item].snmp_location }}"
+          - tag: device_type
+            value: switch
+
+      loop: "{{ groups['switches'] }}"
+      no_log: false
+
+  vars:
+    ansible_zabbix_auth_key: "{{ zabbix_api_token }}"
