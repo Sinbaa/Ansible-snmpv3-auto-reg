@@ -14,10 +14,10 @@ all:
 
     switches:
       hosts:
-        KS-SW-01:
+        Home-SW-01:
           ansible_host: "192.168.99.10"
           ansible_user: "admin"
-          snmp_location: "Kongsvinger"
+          snmp_location: "Hjemme"
           snmp_contact: "IT"
           zabbix_host_group: "Network Devices"
           zabbix_template: "Cisco IOS by SNMP"
