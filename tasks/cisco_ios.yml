@@ -1,0 +1,28 @@
+
+---
+- name: Konfigurer SNMPv3-gruppe
+  cisco.ios.ios_config:
+    lines:
+      - "snmp-server group {{ snmpv3_group }} v3 priv"
+
+- name: Konfigurer SNMPv3-bruker
+  cisco.ios.ios_config:
+    lines:
+      - >-
+        snmp-server user {{ snmpv3_username }}
+        {{ snmpv3_group }} v3
+        auth {{ snmpv3_auth_protocol }}
+        {{ snmpv3_auth_passphrase }}
+        priv {{ snmpv3_priv_protocol }}
+        {{ snmpv3_priv_passphrase }}
+  no_log: true
+
+- name: Sett SNMP-lokasjon
+  cisco.ios.ios_config:
+    lines:
+      - "snmp-server location {{ snmp_location }}"
+
+- name: Sett SNMP-kontakt
+  cisco.ios.ios_config:
+    lines:
+      - "snmp-server contact {{ snmp_contact }}"
