@@ -21,7 +21,7 @@
         msg: >-
           Ikke støttet nettverksoperativsystem:
           {{ ansible_network_os }}
-      when: ansible_network_os not in [
+      when: ansible_network_os not in 
         "cisco.ios.ios",
         "junipernetworks.junos.junos"
-      ]
+      
