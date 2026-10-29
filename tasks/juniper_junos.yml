@@ -1,0 +1,22 @@
+
+---
+- name: Konfigurer SNMPv3-bruker på Juniper
+  junipernetworks.junos.junos_config:
+    lines:
+      - >-
+        set snmp v3 usm local-engine user {{ snmpv3_username }}
+        authentication-sha authentication-key {{ snmpv3_auth_passphrase }}
+      - >-
+        set snmp v3 usm local-engine user {{ snmpv3_username }}
+        privacy-aes128 privacy-key {{ snmpv3_priv_passphrase }}
+  no_log: true
+
+- name: Sett SNMP-lokasjon
+  junipernetworks.junos.junos_config:
+    lines:
+      - 'set snmp location "{{ snmp_location }}"'
+
+- name: Sett SNMP-kontakt
+  junipernetworks.junos.junos_config:
+    lines:
+      - 'set snmp contact "{{ snmp_contact }}"'

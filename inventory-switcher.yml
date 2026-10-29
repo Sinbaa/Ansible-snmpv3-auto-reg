@@ -17,6 +17,11 @@ all:
         Home-SW-01:
           ansible_host: "192.168.99.10"
           ansible_user: "admin"
+
+        # Plattform og tilkobling
+          ansible_connection: ansible.netcommon.network_cli
+          ansible_network_os: cisco.ios.ios
+
           snmp_location: "Hjemme"
           snmp_contact: "IT"
           zabbix_host_group: "Network Devices"
@@ -29,6 +34,4 @@ all:
             -o KexAlgorithms=+diffie-hellman-group14-sha1
             -o HostKeyAlgorithms=+ssh-rsa
 
-      vars:
-        ansible_connection: ansible.netcommon.network_cli
-        ansible_network_os: cisco.ios.ios
+
