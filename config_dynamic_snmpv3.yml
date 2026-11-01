@@ -1,3 +1,12 @@
+---
+- name: Konfigurer SNMPv3 på nettverksswitcher
+  hosts: switches
+  gather_facts: false
+
+  vars_files:
+    - vault.yml
+
+
 - name: Konfigurer Cisco IOS
   ansible.builtin.include_tasks: tasks/cisco_ios.yml
   when:
