@@ -1,24 +1,15 @@
+- name: Konfigurer Cisco IOS
+  ansible.builtin.include_tasks: tasks/cisco_ios.yml
+  when:
+    - monitoring_method == "snmpv3"
+    - ansible_network_os | default("") == "cisco.ios.ios"
 
----
-- name: Konfigurer SNMPv3 på nettverksswitcher
-  hosts: switches
-  gather_facts: false
+- name: Konfigurer Juniper Junos
+  ansible.builtin.include_tasks: tasks/juniper_junos.yml
+  when:
+    - monitoring_method == "snmpv3"
+    - ansible_network_os | default("") == "junipernetworks.junos.junos"
 
-  vars_files:
-    - vault.yml
-
-  tasks:
-    - name: Konfigurer Cisco IOS
-      ansible.builtin.include_tasks: tasks/cisco_ios.yml
-      when: ansible_network_os == "cisco.ios.ios"
-
-    - name: Konfigurer Juniper Junos
-      ansible.builtin.include_tasks: tasks/juniper_junos.yml
-      when: ansible_network_os == "junipernetworks.junos.junos"
-
-    - name: Avvis ukjent nettverksoperativsystem
-      ansible.builtin.fail:
-        msg: >-
-          Ikke støttet nettverksoperativsystem:
-          {{ ansible_network_os }}
-      when: ansible_network_os not in        [ "cisco.ios.ios",        "junipernetworks.junos.junos"]
+- name: Registrer ICMP-enheter
+  ansible.builtin.include_tasks: tasks/register_icmp.yml
+  when: monitoring_method == "icmp"
