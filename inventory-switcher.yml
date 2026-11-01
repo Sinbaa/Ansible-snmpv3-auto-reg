@@ -14,24 +14,43 @@ all:
 
     switches:
       hosts:
-        Home-SW-01:
+
+        HOME-CISCO-01:
           ansible_host: "192.168.99.10"
           ansible_user: "admin"
-
-        # Plattform og tilkobling
           ansible_connection: ansible.netcommon.network_cli
           ansible_network_os: cisco.ios.ios
 
+          monitoring_method: snmpv3
           snmp_location: "Hjemme"
           snmp_contact: "IT"
-          zabbix_host_group: "Network Devices"
-          zabbix_template: "Cisco IOS by SNMP"
           snmpv3_username: "zabbix"
           snmpv3_group: "ZABBIX"
           snmpv3_auth_protocol: "sha"
           snmpv3_priv_protocol: "aes 128"
+
+          zabbix_host_group: "Network Devices"
+          zabbix_template: "Cisco IOS by SNMP"
+
           ansible_ssh_common_args: >-
             -o KexAlgorithms=+diffie-hellman-group14-sha1
             -o HostKeyAlgorithms=+ssh-rsa
 
+        HOME-JUNIPER-01:
+          ansible_host: "192.168.99.11"
+          monitoring_method: snmpv3
+          ansible_network_os: junipernetworks.junos.junos
+          zabbix_host_group: "Network Devices"
+          zabbix_template: "Juniper SNMP"
 
+        HOME-UNIFI-01:
+          ansible_host: "192.168.99.20"
+          monitoring_method: icmp
+          zabbix_host_group: "Network Devices"
+          zabbix_template: "ICMP Ping"
+
+        HOME-NETGEAR-01:
+          ansible_host: "192.168.99.30"
+          monitoring_method: icmp
+          zabbix_host_group: "Network Devices"
+          zabbix_template: "ICMP Ping"
