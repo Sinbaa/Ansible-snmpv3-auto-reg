@@ -1,7 +1,6 @@
 ---
 - name: Registrer switch med ICMP i Zabbix
   community.zabbix.zabbix_host:
-    zabbix_url: "http://192.168.40.10/zabbix"
     http_login_user: "Admin"
     http_login_password: "{{ zabbix_api_token }}"
     host_name: "{{ inventory_hostname }}"
@@ -18,4 +17,6 @@
         port: "10050"
     state: present
   delegate_to: localhost
+  environment:
+    ZABBIX_SERVER: "http://192.168.40.10/zabbix"
   no_log: true
