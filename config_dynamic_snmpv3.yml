@@ -6,19 +6,20 @@
   vars_files:
     - vault.yml
 
+  tasks:
 
-- name: Konfigurer Cisco IOS
-  ansible.builtin.include_tasks: tasks/cisco_ios.yml
-  when:
-    - monitoring_method == "snmpv3"
-    - ansible_network_os | default("") == "cisco.ios.ios"
+    - name: Konfigurer Cisco IOS
+      ansible.builtin.include_tasks: tasks/cisco_ios.yml
+      when:
+        - monitoring_method == "snmpv3"
+        - ansible_network_os | default("") == "cisco.ios.ios"
 
-- name: Konfigurer Juniper Junos
-  ansible.builtin.include_tasks: tasks/juniper_junos.yml
-  when:
-    - monitoring_method == "snmpv3"
-    - ansible_network_os | default("") == "junipernetworks.junos.junos"
+    - name: Konfigurer Juniper Junos
+      ansible.builtin.include_tasks: tasks/juniper_junos.yml
+      when:
+        - monitoring_method == "snmpv3"
+        - ansible_network_os | default("") == "junipernetworks.junos.junos"
 
-- name: Registrer ICMP-enheter
-  ansible.builtin.include_tasks: tasks/register_icmp.yml
-  when: monitoring_method == "icmp"
+    - name: Registrer ICMP-enheter
+      ansible.builtin.include_tasks: tasks/register_icmp.yml
+      when: monitoring_method == "icmp"

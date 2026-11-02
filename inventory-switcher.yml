@@ -10,8 +10,9 @@ all:
           ansible_network_os: community.zabbix.zabbix
           ansible_httpapi_port: 80
           ansible_httpapi_use_ssl: false
+          ansible_httpapi_validate_certs: false
           ansible_zabbix_url_path: "zabbix"
-
+          ansible_zabbix_auth_key: "{{ zabbix_api_token }}"
     switches:
       hosts:
 
@@ -36,15 +37,8 @@ all:
             -o KexAlgorithms=+diffie-hellman-group14-sha1
             -o HostKeyAlgorithms=+ssh-rsa
 
-        HOME-JUNIPER-01:
-          ansible_host: "192.168.99.11"
-          monitoring_method: snmpv3
-          ansible_network_os: junipernetworks.junos.junos
-          zabbix_host_group: "Network Devices"
-          zabbix_template: "Juniper SNMP"
-
         HOME-NETGEAR-01:
-          ansible_host: "192.168.99.30"
+          ansible_host: "192.168.99.20"
           monitoring_method: icmp
           zabbix_host_group: "Network Devices"
           zabbix_template: "ICMP Ping"
